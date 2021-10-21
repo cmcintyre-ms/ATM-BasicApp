@@ -8,7 +8,10 @@ namespace ATM_BasicApp
         {
             Start.StartUp();
 
+            
         }
+
+       
 
 
 

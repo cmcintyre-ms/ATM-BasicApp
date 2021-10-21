@@ -7,6 +7,7 @@ namespace ATM_BasicApp
     
     public class MainMenu
     {
+        public static string name = "Cheryl McIntyre";
         public static double balance = 10000.00;
         public static double cashAvailability = 1000.00;
         public static int transactionLimit = 10;
@@ -17,7 +18,7 @@ namespace ATM_BasicApp
             Console.Clear();
             Console.WriteLine("Welcome to MS Bank");
             Console.WriteLine("------------------");
-            Console.WriteLine("Welcome Cheryl");
+            Console.WriteLine($"Welcome {name}");
             Console.WriteLine("------------------");
             Console.WriteLine();
 
@@ -60,42 +61,44 @@ namespace ATM_BasicApp
             Console.WriteLine($"Current Balance: £{balance}");
             Console.WriteLine($"Number of transactions available: {transactionLimit}");
             Console.WriteLine("-----------------------------------------------------");
-            Console.WriteLine($"Please confirm you would like to withdraw £{cashAvailability} from your account:");
-            Console.WriteLine("Press Y to confirm or N to return to the Main Menu:");
-            string option = Console.ReadLine().ToUpper();
 
-            if(option == "Y")
+            if (balance > cashAvailability && cashAvailability > 0)
             {
-                balance -= cashAvailability;
-                transactionLimit --;
-                DateTime time = DateTime.Now;
-                transactions.Add($"Transaction confirmed at {time}, Current Balance: {balance}");
-                Console.WriteLine("-----------------------------------------------------");
-                Console.WriteLine("TRANSACTION COMPLETED");
-                Console.WriteLine($"New Balance: {balance}");
-                Console.WriteLine($"Number of transactions available: {transactionLimit}");
-                Console.WriteLine("-----------------------------------------------------");
+                Console.WriteLine($"Please confirm you would like to withdraw £{cashAvailability} from your account:");
+                Console.WriteLine("Press Y to confirm or N to return to the Main Menu:");
+                string option = Console.ReadLine().ToUpper();
 
-                Console.WriteLine("Press 0 to return to the Main Menu or press 9 to exit");
-                int menuOption = Convert.ToInt32(Console.ReadLine());
 
-                switch (menuOption)
+                if (option == "Y")
                 {
-                    case 0:
-                        MainMenuStartUp();
-                        break;
-                    case 9:
-                        return;
-                    default:
-                        Console.WriteLine("Please enter a valid number");
-                        break;
+                    balance -= cashAvailability;
+                    transactionLimit--;
+                    DateTime time = DateTime.Now;
+                    transactions.Add($"Transaction confirmed at {time}, Current Balance: {balance}");
+                    Console.WriteLine("-----------------------------------------------------");
+                    Console.WriteLine("TRANSACTION COMPLETED");
+                    Console.WriteLine($"New Balance: {balance}");
+                    Console.WriteLine($"Number of transactions available: {transactionLimit}");
+                    Console.WriteLine("-----------------------------------------------------");
+
+                    ReturnToMainMenu();
+
+
                 }
-
-
+                else if (option == "N")
+                {
+                    MainMenuStartUp();
+                }
             }
-            else if (option == "N")
+            else if(cashAvailability == 0)
             {
-                MainMenuStartUp();
+                Console.WriteLine("You have reached your cash withdrawl limit for today");
+                ReturnToMainMenu();
+            }
+            else
+            {
+                Console.WriteLine("You do not have sufficent funds to withdrawl");
+                ReturnToMainMenu();
             }
         }
 
@@ -107,21 +110,7 @@ namespace ATM_BasicApp
             {
                 Console.WriteLine(transaction.ToString());
             }
-            Console.WriteLine("------------------------------------");
-            Console.WriteLine("Press 0 to return to the Main Menu or press 9 to exit");
-            int option = Convert.ToInt32(Console.ReadLine());
-
-            switch (option)
-            {
-                case 0:
-                    MainMenuStartUp();
-                    break;
-                case 9:
-                    return;
-                default:
-                    Console.WriteLine("Please enter a valid number");
-                    break;
-            }
+            ReturnToMainMenu();
         }
 
         private static void CashAvailability()
@@ -129,27 +118,19 @@ namespace ATM_BasicApp
             Console.WriteLine();
             Console.WriteLine($"Your current cash availability for today is £{cashAvailability}");
             Console.WriteLine($"You still can make {transactionLimit} transactions today");
-            Console.WriteLine("------------------------------------");
-            Console.WriteLine("Press 0 to return to the Main Menu or press 9 to exit");
-            int option = Convert.ToInt32(Console.ReadLine());
-
-            switch (option)
-            {
-                case 0:
-                    MainMenuStartUp();
-                    break;
-                case 9:
-                    return;
-                default:
-                    Console.WriteLine("Please enter a valid number");
-                    break;
-            }
+            ReturnToMainMenu();
         }
 
         public static void ViewBalance()
         {
             Console.WriteLine();
             Console.WriteLine($"Your current balance is: £{balance}");
+            ReturnToMainMenu();
+
+        }
+
+        public static void ReturnToMainMenu()
+        {
             Console.WriteLine("------------------------------------");
             Console.WriteLine("Press 0 to return to the Main Menu or press 9 to exit");
             int option = Convert.ToInt32(Console.ReadLine());
@@ -165,7 +146,6 @@ namespace ATM_BasicApp
                     Console.WriteLine("Please enter a valid number");
                     break;
             }
-
         }
     }
 }
