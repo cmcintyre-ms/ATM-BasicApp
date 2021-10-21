@@ -15,8 +15,10 @@ namespace ATM_BasicApp
         public static void MainMenuStartUp()
         {
             Console.Clear();
+            Console.WriteLine("Welcome to MS Bank");
+            Console.WriteLine("------------------");
             Console.WriteLine("Welcome Cheryl");
-            Console.WriteLine("--------------");
+            Console.WriteLine("------------------");
             Console.WriteLine();
 
             Console.WriteLine("Please choose from the following options");
