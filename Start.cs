@@ -5,8 +5,8 @@ namespace ATM_BasicApp
 {
     internal class Start
     {
-        public static string validCardNumber = "5698741032653025";
-        public static string validPin = "1234";
+        //public static string validCardNumber = "5698741032653025";
+        //public static string validPin = "1234";
 
         public static void StartUp()
         {
@@ -33,7 +33,8 @@ namespace ATM_BasicApp
                 }
                 else
                 {
-                    MainMenu.MainMenuStartUp();
+                    var result = User.users.Find(i => i.CardNumber == cardNumber);
+                    MainMenu.MainMenuStartUp(result);
                 }
 
 
@@ -43,7 +44,8 @@ namespace ATM_BasicApp
 
         public static bool CardNumCheck(string cardNum)
         {
-            if (cardNum == validCardNumber)
+            var result = User.users.Find(i => i.CardNumber == cardNum);
+            if (result != null)
             {
                 return true;
             }
@@ -55,7 +57,8 @@ namespace ATM_BasicApp
 
         public static bool PinNumCheck(string pin)
         {
-            if(pin == validPin)
+            var result = User.users.Find(i => i.Pin == pin);
+            if(result != null)
             {
                 return true;
             }
