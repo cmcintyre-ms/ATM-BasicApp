@@ -7,14 +7,7 @@ namespace ATM_BasicApp
     
     public class MainMenu
     {
-        //public static string name = "Cheryl McIntyre";
-        //public static double balance = 10000.00;
-        //public static double cashAvailability = 1000.00;
-        //public static int transactionLimit = 10;
-
         
-        //public static List<string> transactions = new List<string>();
-
         public static void MainMenuStartUp(User user)
         {
             var result = user;
@@ -30,6 +23,7 @@ namespace ATM_BasicApp
             Console.WriteLine("2. Cash Availablity");
             Console.WriteLine("3. Previous 5 Transactions");
             Console.WriteLine("4. Cash Withdrawl");
+            Console.WriteLine("5. Additional Options");
             Console.WriteLine("Enter the menu number or press '0' to log out:- ");
             int option = Convert.ToInt32(Console.ReadLine());
 
@@ -50,6 +44,9 @@ namespace ATM_BasicApp
                     case 4:
                         CashWithdrawl(result);
                         break;
+                    case 5:
+                        AdditionalMenu.Menu(result);
+                        break;
                     default:
                         Console.WriteLine("Please enter a valid number between 1 - 4 or 0 to exit");
                         break;
@@ -65,22 +62,21 @@ namespace ATM_BasicApp
             Console.WriteLine($"Number of transactions available: {user.TransactionLimit}");
             Console.WriteLine("-----------------------------------------------------");
 
-            if (user.Balance > user.CashAvailability && user.CashAvailability > 0)
+            if (user.TransactionLimit != 0)
             {
-                Console.WriteLine($"Please confirm you would like to withdraw £{user.CashAvailability} from your account:");
-                Console.WriteLine("Press Y to confirm or N to return to the Main Menu:");
-                string option = Console.ReadLine().ToUpper();
+                Console.WriteLine($"Please enter how much you would like to withdraw from your account:");
+                double option = Convert.ToDouble(Console.ReadLine());
 
 
-                if (option == "Y")
+                if (option <= user.Balance)
                 {
-                    user.Balance -= user.CashAvailability;
+                    user.Balance -= option;
                     user.TransactionLimit--;
                     DateTime time = DateTime.Now;
-                    user.Transactions.Add($"Transaction confirmed at {time}, Current Balance: {user.Balance}");
+                    user.Transactions.Add($"Transaction confirmed at {time}, Current Balance: £{user.Balance}");
                     Console.WriteLine("-----------------------------------------------------");
                     Console.WriteLine("TRANSACTION COMPLETED");
-                    Console.WriteLine($"New Balance: {user.Balance}");
+                    Console.WriteLine($"New Balance: £{user.Balance}");
                     Console.WriteLine($"Number of transactions available: {user.TransactionLimit}");
                     Console.WriteLine("-----------------------------------------------------");
 
@@ -88,21 +84,19 @@ namespace ATM_BasicApp
 
 
                 }
-                else if (option == "N")
+                else if (option > user.Balance)
                 {
-                    MainMenuStartUp(user);
+                    Console.WriteLine("You do not have enough money in your account");
+                    ReturnToMainMenu(user);
                 }
+               
             }
-            else if(user.CashAvailability == 0)
+            else
             {
                 Console.WriteLine("You have reached your cash withdrawl limit for today");
                 ReturnToMainMenu(user);
             }
-            else
-            {
-                Console.WriteLine("You do not have sufficent funds to withdrawl");
-                ReturnToMainMenu(user);
-            }
+            
         }
 
         private static void PreviousTransactions(User user)
@@ -119,7 +113,7 @@ namespace ATM_BasicApp
         private static void CashAvailability(User user)
         {
             Console.WriteLine();
-            Console.WriteLine($"Your current cash availability for today is £{user.CashAvailability}");
+            Console.WriteLine($"Balance: {user.Balance}");
             Console.WriteLine($"You still can make {user.TransactionLimit} transactions today");
             ReturnToMainMenu(user);
         }

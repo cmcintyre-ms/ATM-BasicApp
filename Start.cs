@@ -5,8 +5,7 @@ namespace ATM_BasicApp
 {
     internal class Start
     {
-        //public static string validCardNumber = "5698741032653025";
-        //public static string validPin = "1234";
+        
 
         public static void StartUp()
         {
